@@ -5,7 +5,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kết quả liên hệ - Nguyễn Văn Quốc Bảo</title>
-  <link rel="stylesheet" href="D:\CNTT20-04\portfolio\css\style.css" />
 </head>
 
 <body>
@@ -30,15 +29,20 @@
   <main id="noi-dung" class="result-main">
     <div class="container">
       <section class="result-panel" aria-labelledby="result-title">
-        <h1 id="result-title">
-          Đã chuyển đến trang kết quả
-        </h1>
+        <h1 id="result-title">Kết quả gửi lời nhắn</h1>
 
-        <p>
-          Form đã vượt qua bước kiểm tra dữ liệu HTML5
-          của trình duyệt và chuyển đến trang kết quả
-          thực hành.
+        <p id="result-status" aria-live="polite">
+          Đang kiểm tra dữ liệu biểu mẫu...
         </p>
+
+        <dl id="submitted-data" hidden>
+          <dt>Họ và tên:</dt>
+          <dd id="submitted-fullname"></dd>
+          <dt>Email:</dt>
+          <dd id="submitted-email"></dd>
+          <dt>Lời nhắn:</dt>
+          <dd id="submitted-message"></dd>
+        </dl>
 
         <p>
           <strong>Lưu ý:</strong>
@@ -53,6 +57,29 @@
       </section>
     </div>
   </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const fullname = params.get("fullname")?.trim();
+    const email = params.get("email")?.trim();
+    const message = params.get("message")?.trim();
+    const status = document.getElementById("result-status");
+    const submittedData = document.getElementById("submitted-data");
+
+    if (!fullname && !email && !message) {
+      status.textContent =
+        "Bạn chưa gửi biểu mẫu. Vui lòng quay lại trang liên hệ để nhập thông tin.";
+    } else if (!fullname || !email || !message) {
+      status.textContent =
+        "Thông tin gửi lên chưa đầy đủ. Vui lòng quay lại và điền đủ các trường.";
+    } else {
+      status.textContent = "Biểu mẫu đã được gửi đến trang kết quả.";
+      document.getElementById("submitted-fullname").textContent = fullname;
+      document.getElementById("submitted-email").textContent = email;
+      document.getElementById("submitted-message").textContent = message;
+      submittedData.hidden = false;
+    }
+  </script>
 
   <footer class="site-footer">
     <div class="container">
